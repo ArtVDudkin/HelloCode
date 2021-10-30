@@ -28,7 +28,7 @@ int Counter(int n)
     {
         if (n % simpleNumber[index] == 0)
         {
-            //Console.WriteLine(simpleNumber[index]);
+            Console.Write(simpleNumber[index] + " ");
             // if (simpleNumber[index] == 2)
             // {
             //     count++;
@@ -52,5 +52,6 @@ int Counter(int n)
 
 
 //int n = 32; // 1..2_147_000_000
-int result = Counter(28);
+int result = Counter(90);
+Console.WriteLine();
 Console.WriteLine($"Итого различных делителей = {result}");
