@@ -1,120 +1,89 @@
-﻿void FillArray(int[] collection)
+﻿void FillArray(int[] collection)       // заполняем массив случайными целыми двузначными числами
 {
     int length = collection.Length;
     int index = 0;
      while (index < length)
      {
-         collection[index] = new Random().Next(10, 100);  // рандомные числа от 10 до 99
+         collection[index] = new Random().Next(10, 100);  // задаем рандомные целые числа от 10 до 99
          index++; 
      }
 }
 
-void PrintArray(int[] col)
+void PrintArray(int[] col)             // печатаем заданный в качестве аргумента массив       
 {
     int count = col.Length;
-    int position = 0;
-    while (position < count)
+    int index = 0;
+    while (index < count)
     {
-        if (col[position] != 0)
-            Console.Write(col[position] +" ");
-        position++;
+        if (col[index] != 0) Console.Write(col[index] +" ");  // выводим на экран только те элементы массива, которые не маркированы 0 по умолчанию
+        index++;
     }
+    Console.WriteLine();  // просто разрыв строки для удобства восприятия
 }
 
-// int IndexOf(int[] collection, int find)
-// {
-//     int count = collection.Length;
-//     int index = 0;
-//      int position = -1;
-//      while (index < count)
-//      {
-//          if (collection[index] == find)
-//          {
-//              position = index;
-//              break;
-//          }
-//          index++;
-//      }
-//      return position;
-// }
-
-// void SelectArray(int[] col)
-// {
-//     int count = col.Length;
-//     int[] selected = new int[count];
-//     int index = 0;
-//     int average = 0;
-//     int sum = 0;
-//     while (index < count)
-//     {
-//         sum = sum + col[index];
-//         index++;
-//     }
-//     average = sum / count;
-//     Console.WriteLine($"Среднее равно = {average}");
-//     index = 0;
-//     while (index < count)
-//     {
-//         if (col[index] % 2 != 0) 
-//         {
-//             arrayB[index] = col[index];
-//         }   
-//         index++;
-//     }
-//  //   return selected;
-// }
-
-
-
-int[] arrayA = new int[20];
-int[] arrayB = new int[20]; 
-
-int count = arrayA.Length;
+int size = 20;                           // задаем размер массивов А, В1, В2, В3
+int[] arrayA = new int[size];            // создаем исходный массив А
+int[] arrayB1 = new int[size];           // создаем массив для чисел, отбрасывая те, которые нарушают порядок возрастания
+int[] arrayB2 = new int[size];           // создаем массив для чисел, отбрасывая те, которые больше среднего арифметического элементов массива А
+int[] arrayB3 = new int[size];           // создаем массив для чисел, отбрасывая те, которые четные
+                                         // по умолчанию массивы А, В1, В2 и В3 заполнены нулями
 int index = 0;
-int average = 0;
 int sum = 0;
-int max = arrayA[0];
+int average = 0;
+int max = arrayA[0];                     // по умолчанию считаем нулевой элемент максимальным
 
-FillArray(arrayA);
-PrintArray(arrayA);
+Console.Clear();                         // очистка экрана
+FillArray(arrayA);                       // вызываем функцию для заполнения массива А случайными двузначными числами от 10 до 99
+PrintArray(arrayA);                      // выводим массив А на экран для понимания, с чем мы работаем
 
-while (index < count)
+// решаем первую задачу, отбрасывая числа, которые нарушают последовательность возрастания чисел в массиве А
+index = 0;                               // обнуляем переменную index для решения второй задачи
+while (index < size)
+{
+    if (arrayA[index] > max)             // проверяем, если текущий элемент больше предыдущего (не нарушает порядок возрастания)
+    {
+        arrayB1[index] = arrayA[index];  // то забираем его в массив В1
+        max = arrayA[index];             // запоминаем текущий элемент для сравнения со следующим элементом
+    }
+    else 
+    {                                    // если текущий элемент оказался меньше предыдущего (нарушил возрастание), то дальше ничего не делаем
+        break;                           // прерываем цикл
+    }                                     
+    index++;
+}
+Console.WriteLine("Элементы массива А, которые не нарушают порядок возрастания:");
+PrintArray(arrayB1);                     // выводим массив В1 на экран
+
+// решаем вторую задачу, отбрасывая числа, которые больше среднего арифметического элементов массива А
+index = 0;                               // обнуляем переменную index для решения второй задачи
+while (index < size)                    
 {
     sum = sum + arrayA[index];
     index++;
 }
-average = sum / count;
-Console.WriteLine();
-Console.WriteLine($"Среднее равно = {average}");
-index = 0;
-while (index < count)
+average = sum / size;                    // находим среднее арифметическое элементов массива А
+Console.WriteLine();                     // просто разрыв строки для удобства восприятия
+Console.WriteLine($"Среднее арифметическое элементов массива А = {average}");
+index = 0;                               // обнуляем переменную index чтобы заново перебрать массив А
+while (index < size)
 {
-    if ( (arrayA[index] % 2 != 0) && (arrayA[index] > average) && (arrayA[index] > max) ) 
-    {
-        arrayB[index] = arrayA[index];  
-        max = arrayA[index];  
-    }
-    else 
-    {
-        arrayB[index] = 0;
-    }   
-
+    if (arrayA[index] < average) arrayB2[index] = arrayA[index];  // проверяем, если элемент меньше среднего значения, то забираем его в массив В2
     index++;
 }
+Console.WriteLine("Числа, которые меньше среднего арифметического элементов массива А:");
+PrintArray(arrayB2);                     // выводим массив В2 на экран
+
+// решаем третью задачу, отбрасывая четные числа
+index = 0;                               // обнуляем переменную index для решения третьей задачи
+while (index < size)
+{
+    if (arrayA[index] % 2 != 0) arrayB3[index] = arrayA[index];  // проверяем, если элемент нечетный, то забираем его в массив В3
+    index++;
+}
+Console.WriteLine();                     // просто разрыв строки для удобства восприятия
+Console.WriteLine("Элементы массива А, которые не являются четными:");
+PrintArray(arrayB3);                     // выводим массив В3 на экран
 
 
-Console.WriteLine();
-//SelectArray(arrayA);
-PrintArray(arrayB);
-Console.WriteLine();
-// Console.WriteLine();
-// int pos = IndexOf(array, 4);
-// if (pos == -1)
-// {
-//     Console.WriteLine("Элемент 4 в массиве не найден");
-// }
-// else
-// {
-//     Console.WriteLine($"Элемент 4 находится в массиве под индексом {pos}");
-// }
+
 
