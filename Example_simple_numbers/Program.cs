@@ -22,45 +22,44 @@ void Counter(int n)
 {
     int[] simpleNumber = { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193 };
     int index = 0;
-    int countTwo = 0;
-    int minimal = simpleNumber[simpleNumber.Length-1];
-    int count_diff = 0;
-    int devider = 0;
+    int countTwo = 0;   // счетчик двоек
+    int minimal = simpleNumber[simpleNumber.Length -1]; // задаем начальное минимальное значение равное самому последнему элементу в массиве (самому большому)
+    int count_diff = 0; // счетчик различных множителей
+    int devider = 0;    // контейнер для запоминания множителей 
     while (n > 1)
     {
-        if (n % simpleNumber[index] == 0)
+        if (n % simpleNumber[index] == 0)     // проверяем, делится ли число на текущий простой множитель
         {
-            Console.Write(simpleNumber[index] + " ");
-            if (simpleNumber[index] == 2)
+            Console.Write(simpleNumber[index] + " "); // выводим простой множитель на экран
+            if (simpleNumber[index] == 2)             // проверяем, делится ли число на 2, если да
             {
-                countTwo++;
+                countTwo++;                           // то увеличиваем количество двоек на 1
             }
-            if (simpleNumber[index] < minimal)
+            if (simpleNumber[index] < minimal)        // проверяем, является ли текущий простой множитель минимальным
             {
-                minimal = simpleNumber[index];
+                minimal = simpleNumber[index];        // если есть простой множитель меньше текущего, то запоминаем его
             }
-            if(simpleNumber[index] != devider)
+            if(simpleNumber[index] != devider)        // если текущий множитель отличается от уже известного нам, то 
             {
-                devider = simpleNumber[index];
-                count_diff++;
+                devider = simpleNumber[index];        // запоминаем новый простой множитель       
+                count_diff++;                         // увеличиваем число известных нам множителей на 1
             }
-            n = n / simpleNumber[index];
+            n = n / simpleNumber[index];              // делим наше число на текущий простой множитель, находим остаток и работаем с ним дальше
         }
         else
         {
-            index++;
+            index++;   // переходим к следующему простому множителю в массиве
         }
     }
-    Console.WriteLine();
+    Console.WriteLine();     // просто переход на новую строку для более удобного вывода на экран
     Console.WriteLine($"Итого двоек: {countTwo}");
     Console.WriteLine($"Минимальный множитель: {minimal}");
     Console.WriteLine($"Итого различных делителей: {count_diff}");
   //  return count;
 }
 
-
 //int n = 32; // 1..2_147_000_000
 // int result = Counter(90);
 // Console.WriteLine();
 // Console.WriteLine($"Итого различных делителей = {result}");
-Counter(200);
+Counter(2);    // здесь задаем некое натуральное число от 1 до 196, если число больше, нужно добавить еще простых чисел в массив
