@@ -33,13 +33,13 @@ int GenNextSimple(int currentSimple)     // Функция для нахожде
 double number = 600851475143;                        // вводим исходное число
 int firstSimple = 2;                                 // 2 самое первое простое число
 int max = firstSimple;                               // по умолчанию принимаем, что самый большой простой множитель равен 2
-int nextSimple = firstSimple;                        // для нахождения 
+int nextSimple = firstSimple;                        // переменная, в которую будет записано новое найденное простое число 
 
 Console.Clear();                                     // очистка экрана
 Console.WriteLine($"Для числа {number} простыми множителями являются:");
 while (number > 1)
 {
-    if (number % nextSimple == 0)                   // если наше число делится на текущий простой множитель ли без остатка 
+    if (number % nextSimple == 0)                   // если наше число делится на текущий простой множитель без остатка 
     {
         number = number / nextSimple;               // то делим наше число на этот простой множитель
         Console.Write(nextSimple + " ");            // выводим текущий простой множитель на экран
