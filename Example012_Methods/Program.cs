@@ -74,3 +74,13 @@ SelectionSortForward(arr);
 PrintArray(arr);
 SelectionSortBack(arr);
 PrintArray(arr);
+
+Console.WriteLine("Введите два числа:");
+int number1 = Convert.ToInt32(Console.ReadLine());
+int number2 = Convert.ToInt32(Console.ReadLine());
+Console.WriteLine(number1 + number2);
+
+//
+//
+//
+//
