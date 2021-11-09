@@ -18,35 +18,40 @@
 
 int openTime = 0;                              // время открытия магазина 00:00
 int closeTime = 24;                            // время закрытия магазина 24:00
-int[] peopleInside = new int[closeTime - openTime];    // массив, в котором хранится количество посетителей в текущем и будущих периодах времени
 int peopleLimit = 100;                         // в магазине одновременно может находиться максимум 100 человек
-int comingPeople = 0;                          // количество людей, которые пришли в магазин в некий период времени, изначально там не было никого
-// текущее максимально возможное число посетителей = Лимит(100) минус те, кто пришел в данный период времени, минус те, кто пришел ранее и пока еще тут, плюс те, кто ушел в текущем периоде времени
-int currentMaxPeople = peopleLimit - peopleInside[0];  
-int visitTimeOfMan = new Random().Next(1, 24); // время, в течение которого человек может находиться в магазине в диапазоне [1,23] часов
-int indexMaxPeople = 0;                        // индекс периода времени, когда в магазине находилось больше всего посетителей  
 
 Console.Clear();
-for (int time = openTime; time < closeTime; time++)            // в течение суток работы магазина выполняем слудующее
+string showMaxTrafik(int openTime, int closeTime, int peopleLimit)
 {
-    Console.Write($"В период с {String.Format("{0:d2}", time)}:00 по {String.Format("{0:d2}", time +1)}:00 часов в магазине было {String.Format("{0:d2}", peopleInside[time])} человек, ");
-    comingPeople = new Random().Next(0, currentMaxPeople +1);  // 0 = никто не зашел, максимум = текущее мах возможное число посетителей
-    Console.Write($"пришло {String.Format("{0:d2}", comingPeople)} человек, ");
-   // Console.WriteLine($"В период с {String.Format("{0:d2}", time)}:00 по {String.Format("{0:d2}", time +1)}:00 часов в магазин пришло {comingPeople} человек");
-    for (int i = 0; i < comingPeople; i++)                    // для каждого зашедшего человека
+    int[] peopleInside = new int[closeTime - openTime];    // массив, в котором хранится количество посетителей в текущем и будущих периодах времени
+    int comingPeople = 0;                          // количество людей, которые пришли в магазин в некий период времени, изначально там не было никого
+    // текущее максимально возможное число посетителей = Лимит(100) минус те, кто пришел в данный период времени, минус те, кто пришел ранее и пока еще тут, плюс те, кто ушел в текущем периоде времени
+    int currentMaxPeople = peopleLimit - peopleInside[0];  
+    int visitTimeOfMan = new Random().Next(1, 24); // время, в течение которого человек может находиться в магазине в диапазоне [1,23] часов
+    int indexMaxPeople = 0;                        // индекс периода времени, когда в магазине находилось больше всего посетителей  
+
+    for (int time = openTime; time < closeTime; time++)            // в течение суток работы магазина выполняем слудующее
     {
-        // определяем время, в течение которое посетитель будет находиться в магазине (минимум 1 час, максимум = оставшееся время работы магазина)
-        visitTimeOfMan = new Random().Next(1, closeTime - time +1); //    
-        for (int j = time; j < (time + visitTimeOfMan); j++)  // начиная от текущего момента времени time, отмечаем  в будущих периодах сколько времени
+        Console.Write($"В период с {String.Format("{0:d2}", time)}:00 по {String.Format("{0:d2}", time +1)}:00 часов в магазине было {String.Format("{0:d2}", peopleInside[time])} чел., ");
+        comingPeople = new Random().Next(0, currentMaxPeople +1);  // 0 = никто не зашел, максимум = текущее мах возможное число посетителей
+        Console.Write($"пришло {String.Format("{0:d2}", comingPeople)} чел., ");
+        // Console.WriteLine($"В период с {String.Format("{0:d2}", time)}:00 по {String.Format("{0:d2}", time +1)}:00 часов в магазин пришло {comingPeople} человек");
+        for (int i = 0; i < comingPeople; i++)                    // для каждого зашедшего человека
         {
-            peopleInside[j]++;                                // пользователь будет находиться в магазине visitTimeOfMan, увеличивая на 1 кол-во постетителей в этих периодах времени                               
-        }                                                     // количество будущих периодов времени равно visitTimeOfMan   
+            // определяем время, в течение которое посетитель будет находиться в магазине (минимум 1 час, максимум = оставшееся время работы магазина)
+            visitTimeOfMan = new Random().Next(1, closeTime - time +1); //    
+            for (int j = time; j < (time + visitTimeOfMan); j++)  // начиная от текущего момента времени time, отмечаем  в будущих периодах сколько времени
+            {
+                peopleInside[j]++;                                // пользователь будет находиться в магазине visitTimeOfMan, увеличивая на 1 кол-во постетителей в этих периодах времени                               
+            }                                                     // количество будущих периодов времени равно visitTimeOfMan   
+        }
+        currentMaxPeople = peopleLimit - peopleInside[time];      // определяем исходя из лимита(100) и текущей заполненности магазина, сколько максимально еще человек может прийти
+        if (peopleInside[time] > peopleInside[indexMaxPeople])    // если в текущем периоде времени пришло больше посетителей, чем было известно до этого, 
+            indexMaxPeople = time;                                // то запоминаем индекс этого периода времени  
+        //Console.WriteLine($"В период с {String.Format("{0:d2}", time)}:00 по {String.Format("{0:d2}", time +1)}:00 часов в магазине находилось {peopleInside[time]} человек, пришло {comingPeople} человек, максимум еще может придти {currentMaxPeople}");
+        Console.WriteLine($"стало находиться {String.Format("{0:d2}", peopleInside[time])} чел., максимум еще может придти {String.Format("{0:d2}", currentMaxPeople)} чел.");
     }
-    currentMaxPeople = peopleLimit - peopleInside[time];      // определяем исходя из лимита(100) и текущей заполненности магазина, сколько максимально еще человек может прийти
-    if (peopleInside[time] > peopleInside[indexMaxPeople])    // если в текущем периоде времени пришло больше посетителей, чем было известно до этого, 
-        indexMaxPeople = time;                                // то запоминаем индекс этого периода времени  
-    //Console.WriteLine($"В период с {String.Format("{0:d2}", time)}:00 по {String.Format("{0:d2}", time +1)}:00 часов в магазине находилось {peopleInside[time]} человек, пришло {comingPeople} человек, максимум еще может придти {currentMaxPeople}");
-    Console.WriteLine($"стало находиться {peopleInside[time]} человек, максимум еще может придти {currentMaxPeople}");
+    return $"Больше всего посетителей находилось в магазине в период с {String.Format("{0:d2}", indexMaxPeople)}:00 по {String.Format("{0:d2}", indexMaxPeople +1)}:00 часов: {peopleInside[indexMaxPeople]} человек";
 }
 
-Console.WriteLine($"Больше всего посетителей находилось в магазине в период с {String.Format("{0:d2}", indexMaxPeople)}:00 по {String.Format("{0:d2}", indexMaxPeople +1)}:00 часов: {peopleInside[indexMaxPeople]} человек");
+Console.WriteLine(showMaxTrafik(openTime, closeTime, peopleLimit));
